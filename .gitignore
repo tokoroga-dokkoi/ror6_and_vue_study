@@ -1,49 +1,51 @@
-*.rbc
-capybara-*.html
-.rspec
-/log
-/tmp
-/db/*.sqlite3
-/db/*.sqlite3-journal
-/public/system
-/coverage/
-/spec/tmp
-*.orig
-rerun.txt
-pickle-email-*.html
+/tmp-data
+/log-data
 
-# TODO Comment out this rule if you are OK with secrets being uploaded to the repo
-config/initializers/secret_token.rb
-config/master.key
+# DataBase
+/containers/db/data/*
+/containers/db/db.env
 
-# Only include if you have production secrets in this file, which is no longer a Rails default
-# config/secrets.yml
+# Rails Application
+/containers/rails/tmp
+/containers/rails/log/*.log
+/containers/rails/.env
+/containers/rails/config/initializers/secret_token.rb
+/containers/rails/config/master.key
+# Ignore bundler config.
+/containers/rails/.bundle
+!/containers/rails/log/.keep
+!/containers/tmp/.keep
 
-# dotenv
-# TODO Comment out this rule if environment variables can be committed
-.env
-
-## Environment normalization:
-/.bundle
-/vendor/bundle
-
-# these should all be checked in to normalize the environment:
-# Gemfile.lock, .ruby-version, .ruby-gemset
-
-# unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
-.rvmrc
-
-# if using bower-rails ignore default bower_components path bower.json files
-/vendor/assets/bower_components
-*.bowerrc
-bower.json
-
-# Ignore pow environment settings
-.powenv
-
-# Ignore Byebug command history file.
+# Ignore uploaded files in development.
+/storage/*
+!/storage/.keep
 .byebug_history
 
-# Ignore node_modules
-node_modules/
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+# Vue Application
+.DS_Store
+/public-data/node_modules
+/public-data/dist
+
+/public-data/tests/e2e/videos/
+/public-data/tests/e2e/screenshots/
+
+# local env files
+/public-data/.env.local
+/public-data/.env.*.local
+
+# Log files
+/public-data/npm-debug.log*
+/public-data/yarn-debug.log*
+/public-data/yarn-error.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
