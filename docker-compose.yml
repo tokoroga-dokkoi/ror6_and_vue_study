@@ -38,7 +38,7 @@ services:
     build:
       context: ./containers/vue
     container_name: rails-app-vue
-    command: yarn serve
+    command: npm run serve
     volumes:
       - ./public-data:/app
     tty: true
