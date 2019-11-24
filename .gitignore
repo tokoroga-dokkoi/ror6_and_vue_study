@@ -40,6 +40,11 @@
 /public-data/yarn-debug.log*
 /public-data/yarn-error.log*
 
+# image file
+/public-data/src/assets/*.svg
+/public-data/src/assets/*.jpg
+/public-data/src/assets/*.png
+
 # Editor directories and files
 .idea
 .vscode
