@@ -1,7 +1,6 @@
 # nginx
 FROM nginx:latest 
 
-COPY ./public-data/app/dist/* /var/www/html
 
 RUN rm -f /etc/nginx/conf.d/*
 

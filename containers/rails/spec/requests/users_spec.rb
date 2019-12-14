@@ -2,6 +2,15 @@ require 'rails_helper'
 include ActionController::RespondWith
 
 RSpec.describe "Users", type: :request do
+
+  # ログイン処理
+  shared_context :login do
+    let(:user) {create(:user)}
+    before do
+      @headers = { 'CONTENT_TYPE' => 'application/json', 'ACCECPT' => 'application/json'}
+      @headers.merge! user.create_new_auth_token
+    end
+  end
   describe "GET /api/v1/auth" do
     let(:user) { create(:user) }
     context "パラメータが正常な場合" do
@@ -75,5 +84,64 @@ RSpec.describe "Users", type: :request do
         expect(response.has_header?("access_token")).to be_falsey
       end
     end
+  end
+
+  describe "DELETE /api/v1/auth/sign_out" do
+    let(:user) { create(:user) }
+    context 'ログインした状態でログアウトする場合' do
+      before do
+        # ログインしておく
+        @params = { email: user.email, password: user.password}.to_json
+        @headers = { 'CONTENT_TYPE' => 'application/json', 'ACCEPT' => 'application/json'}
+        post api_user_session_path, params: @params, headers: @headers
+        @headers.merge!(get_auth_params_from_login_response_headers(response))
+      end
+      it "ログアウトができる" do
+        delete destroy_api_user_session_path, headers: @headers
+        expect(response.status).to eq 200
+        body = JSON.parse(response.body)
+        expect(body["success"]).to be_truthy
+      end
+    end
+    context 'ログインしていない状態でログアウトする場合' do
+      it "ログアウトができない" do
+        delete destroy_api_user_session_path, headers: { 'CONTENT_TYPE' => 'application/json', 'ACCEPT' => 'application/json'}
+        expect(response.status).to eq 404
+        body = JSON.parse(response.body)
+        puts body
+        expect(body["success"]).to be_falsey
+      end
+    end
+  end
+
+  describe "GET /api/v1/users" do
+    context "ユーザがログインしている場合" do
+      #ログイン
+      include_context :login
+      it 'リクエストが成功する' do
+        get api_users_path, headers: @headers
+        expect(response.status).to eq 200
+      end
+    end
+  end
+
+
+
+  def get_auth_params_from_login_response_headers(response)
+    client     = response.headers['client']
+    token      = response.headers['access-token']
+    expiry     = response.headers['expiry']
+    token_type = response.headers['token_type']
+    uid        = response.headers['uid']
+
+    auth_params = {
+      'access-token' => token,
+      'client' => client,
+      'uid' => uid,
+      'expiry' => expiry,
+      'token_type' => token_type
+    }
+
+    auth_params
   end
 end

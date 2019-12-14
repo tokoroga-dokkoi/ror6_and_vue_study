@@ -6,8 +6,14 @@ services:
     container_name: rails-app-apiserver
     env_file:
       - ./containers/db/db.env
+    #for development
+    ports:
+      - 3000:3000
     command:
-      bundle exec puma -C config/puma.rb
+      ## for development
+      bundle exec rails s -b "0.0.0.0"
+      ## for builde staging
+      #bundle exec puma -C config/puma.rb
     volumes:
       - ./containers/rails/:/webapp
       - ./tmp-data:/webapp/tmp
@@ -28,8 +34,8 @@ services:
       context: containers/nginx
     container_name: rails-app-nginx
     volumes:
-      - public-data:/var/www/html
-      - tmp-data:/webapp/tmp
+      - ./public-data/dist:/var/www/html
+      - ./tmp-data:/webapp/tmp
     ports:
       - 80:80
     depends_on:
@@ -44,9 +50,8 @@ services:
     tty: true
     ports:
       - 8000:8080
-    depends_on:
+    depends_on: 
       - app
-    
 volumes:
   public-data:
   tmp-data:

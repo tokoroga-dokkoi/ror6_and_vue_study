@@ -6,4 +6,17 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   include DeviseTokenAuth::Concerns::User
+
+  has_many :posts, dependent: :destroy
+
+  def get_timeline_data
+    timelines = self.posts.with_attached_picture
+    timelines.map do |timeline|
+      {
+        timeline: timeline,
+        image: timeline.attachment_url
+      }
+    end
+  end
+
 end

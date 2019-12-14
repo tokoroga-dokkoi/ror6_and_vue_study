@@ -6,7 +6,7 @@
                     :src="require('../assets/index-prod.jpg')"
                     gradient="to top right, rgba(105,105,105,.7), rgba(169, 169, 169, .4)"
                 >
-                    <v-row align="top" class="lightbox white--text pa-2 fill-height">
+                    <v-row  class="lightbox white--text pa-2 fill-height">
                         <v-col>
                             <div class="title px-2">
                                 発見があればランニングはもっと楽しくなる

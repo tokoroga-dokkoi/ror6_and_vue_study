@@ -1,25 +1,39 @@
 <template>
   <v-app>
     <v-content>
-      <MyHeader/>
-      <Home/>
+      <MyLoginHedaer
+        v-if="isLogin">
+      </MyLoginHedaer>
+      
+      <MyNonLoginHeader
+        v-else
+      >
+      </MyNonLoginHeader>
+      <router-view></router-view>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import Home from './components/HelloRunningShare'
-import MyHeader from './components/common/Header';
+import MyNonLoginHeader from './components/common/Header'
+import MyLoginHedaer from './components/common/LoginHeader'
 export default {
   name: 'App',
 
   components: {
-    Home,
-    MyHeader
+    MyNonLoginHeader,
+    MyLoginHedaer
+  },
+  computed: {
+      isLogin() {
+          // Headerの項目をログインに応じて変更する
+          // Check Vue Store
+          const storeCheck         = this.$store.state.auth.loggedIn
+          const localStorageCheck  = localStorage.getItem('Token') && true
+          return storeCheck | localStorageCheck
+      }
   },
 
-  data: () => ({
-    //
-  }),
+
 };
 </script>

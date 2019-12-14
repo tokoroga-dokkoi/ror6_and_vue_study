@@ -11,6 +11,7 @@
 /containers/rails/.env
 /containers/rails/config/initializers/secret_token.rb
 /containers/rails/config/master.key
+/containers/rails/storage/*
 # Ignore bundler config.
 /containers/rails/.bundle
 !/containers/rails/log/.keep
