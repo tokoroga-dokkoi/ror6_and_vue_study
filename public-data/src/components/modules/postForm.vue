@@ -41,7 +41,7 @@
                     mdi-close-circle
                 </v-icon>
             </div>
-            <canvas ref="canvas" class="resize-img__preview__canvas" />
+            <canvas v-show="resizedImg" ref="canvas" class="resize-img__preview__canvas" />
         </v-card-text>
         <v-card-actions>
             <v-row align="center" justify="end">
@@ -83,7 +83,6 @@ export default {
     },
     methods: {
         registerPost() {
-            console.log(this.resizedImg)
             //データ整形
             const params  = {
                 post: {
@@ -99,9 +98,11 @@ export default {
             const url    = process.env.VUE_APP_API_URL_BASE?
                            process.env.VUE_APP_API_URL_BASE + '/posts' :
                            '/api/v1/posts'
-            console.log(url)
             request.post(url, options).then( (response) => {
-                console.log(response)
+                this.$emit("uploaded",response.data)
+                this.content.value = ""
+                this.file.value    = []
+                this.clearUploadedImage()
                 this.$store.commit('message/setMessage', {'content': '投稿が完了しました'}, { root: true })
             })
         },
@@ -161,6 +162,7 @@ export default {
             return canvas.toDataURL('image/jpeg')
         },
         clearUploadedImage() {
+
             this.resizedImg = ''
             if(!this.file.value.length && this.file.value[0] !== '') {
                 this.file.value = []

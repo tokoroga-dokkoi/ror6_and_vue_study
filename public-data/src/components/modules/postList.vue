@@ -1,27 +1,37 @@
 <template>
-    <div>
-        PostList
+    <div id="post">
+        <PostCard
+         v-for="timeline in timelines"
+         :key="timeline.id"
+         :timeline="timeline.timeline"
+         :image="timeline.image"
+        >
+        </PostCard>
     </div>
 </template>
 <script>
-import requests from '../../utils/request'
+import PostCard from '../modules/timeline_card'
 export default {
+    props: ["timelines"],
     data: () => ({
-        timelines: [],
         page: 1,
     }),
-    created() {
-        const options = {
-            auth: true
-        }
-        const url     = process.env.VUE_APP_API_URL_BASE ?
-                        process.env.VUE_APP_API_URL_BASE + '/posts' :
-                        '/api/v1/posts'
-        requests.get(url, options).then( (response) => {
-            console.log(response)
-        }).catch( (error) => {
-            console.error(error)
-        })
+    components: {
+        PostCard
     }
 }
 </script>
+<style scoped>
+@media (max-width:960px){
+    #post{
+        width: 100%;
+        margin-top: 0em;
+    }
+}
+@media (min-width:960px){
+    #post{
+        width: 100%;
+        margin-top: 2em;
+    }
+}
+</style>

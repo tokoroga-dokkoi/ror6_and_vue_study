@@ -12,7 +12,7 @@ class Api::PostsController < ApplicationController
         if post.save
             #添付ファイルを保存する
             post.parse_base64(post_params[:image])
-            render json: post, status: :created
+            render json: {timeline: post, image: post.attachment_url}, status: :created
         else
             # エラー時には422を返す
             render json: post.errors, status: :unprocessable_entity

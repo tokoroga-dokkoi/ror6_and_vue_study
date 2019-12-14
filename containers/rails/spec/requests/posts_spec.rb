@@ -61,11 +61,10 @@ RSpec.describe "Posts", type: :request do
         #パラメータに埋め込み
         @post_params[:image] = base64_encoded
       end
-
       it "投稿したデータにファイルがアタッチされている" do
         post api_posts_path, params: { post: @post_params }.to_json, headers: @header
         body   = JSON.parse(response.body)
-        posted = Post.find(body["id"])
+        posted = Post.find(body["timeline"]["id"])
         # 添付ファイルがアタッチされている
         expect(posted.picture.attached?).to be_truthy
       end

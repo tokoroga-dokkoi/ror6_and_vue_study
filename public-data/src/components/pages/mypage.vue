@@ -4,11 +4,11 @@
             <UserNavigationMenu></UserNavigationMenu>
         </v-col>
         <v-col cols="9">
-            <v-row>
-                <PostForm></PostForm>
+            <v-row class="hidden-sm-and-down">
+                <PostForm @uploaded="appendToTimelines($event)"></PostForm>
             </v-row>
             <v-row>
-                <PostList></PostList>
+                <PostList :timelines="timelines"></PostList>
             </v-row>
         </v-col>
     </v-row>
@@ -18,7 +18,32 @@
 import UserNavigationMenu from '../modules/userNavigationMenu'
 import PostForm from '../modules/postForm'
 import PostList from '../modules/postList'
+import requests from '../../utils/request'
+
 export default {
+    data: () => ({
+        timelines: [],
+        posted: {}
+    }),
+    created() {
+        const options = {
+            auth: true
+        }
+        const url     = process.env.VUE_APP_API_URL_BASE ?
+                        process.env.VUE_APP_API_URL_BASE + '/posts' :
+                        '/api/v1/posts'
+        requests.get(url, options).then( (response) => {
+            this.timelines = response.data
+        }).catch( (error) => {
+            console.error(error)
+        })
+    },
+    methods: {
+        appendToTimelines(eventArgs){
+            console.log(eventArgs)
+            this.timelines.unshift(eventArgs)
+        }
+    },
     components: {
         UserNavigationMenu,
         PostForm,
