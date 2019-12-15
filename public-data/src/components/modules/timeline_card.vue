@@ -16,7 +16,6 @@
         </v-list-item>
         <v-img
             :src="image"
-            :height="image_height"
         >
         </v-img>
         <v-card-text>
@@ -33,7 +32,7 @@
                 text
                 color="deep-red accent-4"
             >
-                ファボ
+                行った!!
             </v-btn>
         </v-card-actions>
     </v-card>
@@ -41,8 +40,5 @@
 <script>
 export default {
     props: ["timeline", "image"],
-    data: () => ({
-        image_height: 194
-    })
 }
 </script>

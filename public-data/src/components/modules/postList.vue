@@ -1,5 +1,8 @@
 <template>
     <div id="post">
+        <div class="display-1 mb-2">
+            タイムライン
+        </div>
         <PostCard
          v-for="timeline in timelines"
          :key="timeline.id"

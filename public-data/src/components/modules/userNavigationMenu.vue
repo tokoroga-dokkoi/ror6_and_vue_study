@@ -1,7 +1,8 @@
 <template>
     <v-navigation-drawer
         permanent
-        height="100vh"
+        :fixed="positionY > 64"
+        :width="calcMaxWidth"
     >
         <template v-slot:prepend>
             <v-list-item two-line>
@@ -23,7 +24,11 @@
                 :key="item.title"
             >
                 <v-list-item-icon>
-                    <v-icon> {{ item.icon }} </v-icon>
+                    <v-icon
+                        :color="item.color"
+                    > 
+                        {{ item.icon }} 
+                    </v-icon>
                 </v-list-item-icon>
                 <v-list-item-content class="hidden-sm-and-down">
                     <v-list-item-title> {{ item.title }}</v-list-item-title>
@@ -36,11 +41,26 @@
 export default {
     data: () => ({
         items: [
-            { title: 'ホーム', icon: 'mdi-home' },
-            { title: '通知をみる', icon: 'mdi-bell-outline' },
-            { title: 'メッセージ', icon: 'mdi-message' },
-            { title: 'プロフィール', icon: 'mdi-face'}
-        ]
-    })
+            { title: 'ホーム', icon: 'mdi-home', color:'' },
+            { title: '通知をみる', icon: 'mdi-bell-outline', color:'' },
+            { title: 'メッセージ', icon: 'mdi-message', color:'' },
+            { title: 'プロフィール', icon: 'mdi-face', color:''},
+            { title: '投稿する', icon: 'mdi-comment-plus-outline', color:'blue darken-3'}
+        ],
+        positionY: 0
+    }),
+    computed: {
+        calcMaxWidth() {
+            return this.positionY > 64 ? '20%' : 'auto'
+        }
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll)
+    },
+    methods: {
+        handleScroll() {
+            this.positionY = window.scrollY
+        }
+    }
 }
 </script>

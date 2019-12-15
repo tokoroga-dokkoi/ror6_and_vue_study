@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :posts, dependent: :destroy
 
   def get_timeline_data
-    timelines = self.posts.with_attached_picture
+    timelines = self.posts.recent_10_posts.with_attached_picture
     timelines.map do |timeline|
       {
         timeline: timeline,
