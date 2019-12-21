@@ -8,7 +8,7 @@
                 <PostForm @uploaded="appendToTimelines($event)"></PostForm>
             </v-row>
             <v-row>
-                <PostList :timelines="timelines"></PostList>
+                <PostList :timelines="timelines" @unfollowed="removeTimeline($event)"></PostList>
             </v-row>
         </v-col>
     </v-row>
@@ -30,8 +30,8 @@ export default {
             auth: true
         }
         const url     = process.env.VUE_APP_API_URL_BASE ?
-                        process.env.VUE_APP_API_URL_BASE + '/posts' :
-                        '/api/v1/posts'
+                        process.env.VUE_APP_API_URL_BASE + '/mypage' :
+                        '/api/v1/mypage'
         requests.get(url, options).then( (response) => {
             this.timelines = response.data
         }).catch( (error) => {
@@ -42,6 +42,9 @@ export default {
         appendToTimelines(eventArgs){
             console.log(eventArgs)
             this.timelines.unshift(eventArgs)
+        },
+        removeTimeline(unfollowedUser){
+            this.timelines = this.timelines.filter( timeline => timeline.timeline.user_id !== unfollowedUser)
         }
     },
     components: {

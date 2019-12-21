@@ -1,12 +1,6 @@
 class Api::PostsController < ApplicationController
     before_action :authenticate_api_user!
 
-
-    def index
-        #自分のTweetを取得
-        posts  = current_api_user.get_timeline_data
-        render json: posts, status: :ok
-    end
     def create
         post = current_api_user.posts.new(post_params)
         if post.save
@@ -19,6 +13,9 @@ class Api::PostsController < ApplicationController
         end
     end
 
+    def timeline
+        posts = current_api_user.get_followed_user_timeline
+    end
 
     private
     def post_params

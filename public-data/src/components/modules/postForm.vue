@@ -104,6 +104,9 @@ export default {
                 this.file.value    = []
                 this.clearUploadedImage()
                 this.$store.commit('message/setMessage', {'content': '投稿が完了しました'}, { root: true })
+            }).catch( (error) => {
+                console.error(error)
+                this.$store.commit('message/setMessage', {'content': 'エラーが発生しました。', 'type': 'error'}, {root: true})
             })
         },
         fileUpload(eventArgs) {

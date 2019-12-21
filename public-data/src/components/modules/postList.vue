@@ -8,6 +8,8 @@
          :key="timeline.id"
          :timeline="timeline.timeline"
          :image="timeline.image"
+         :user="timeline.user"
+         @unfollow="removedTimeline($event)"
         >
         </PostCard>
     </div>
@@ -21,6 +23,11 @@ export default {
     }),
     components: {
         PostCard
+    },
+    methods: {
+        removedTimeline(unfollowedUser) {
+            this.$emit("unfollowed", unfollowedUser)
+        }
     }
 }
 </script>

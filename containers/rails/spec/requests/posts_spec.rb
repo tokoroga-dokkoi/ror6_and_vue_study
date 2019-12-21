@@ -10,29 +10,6 @@ RSpec.describe "Posts", type: :request do
       @header.merge! user.create_new_auth_token  
     end
   end
-  describe "GET /posts" do
-    context "ユーザがログインしている場合" do
-      include_context :login
-      before do
-        @post = user.posts.create!(attributes_for(:post))
-        @post.parse_base64(image_to_base64("test.png"))
-      end
-      it "リクエストに成功する" do
-        get api_posts_path, headers: @header
-        expect(response.status).to eq 200
-      end
-
-      it "画像付きの投稿にはURLが記載されている" do
-        get api_posts_path, headers: @header
-        body                   = JSON.parse(response.body)
-        posts_with_attachement = body.select do |b|
-          b["timeline"]["id"] == @post.id
-        end
-        puts posts_with_attachement
-        expect(posts_with_attachement[0]["image"]).not_to eq nil
-      end
-    end
-  end
   describe "POST /posts" do
     context "画像を添付せずに正常に投稿した場合" do
       #ログイン処理

@@ -15,14 +15,11 @@ class User < ActiveRecord::Base
   has_many :follower_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
   has_many :followers, through: :follower_relationships
 
-  def get_timeline_data
-    timelines = self.posts.recent_10_posts.with_attached_picture
-    timelines.map do |timeline|
-      {
-        timeline: timeline,
-        image: timeline.attachment_url
-      }
-    end
+  def get_timelines
+    get_tweet_users = following.map{ |user| user.id }
+    get_tweet_users << self.id
+    timelines        = Post.recent_10_posts.includes(:user).where(user_id: get_tweet_users).with_attached_picture
+    timeline_array(timelines)
   end
 
   def follow(other_user)
@@ -38,4 +35,14 @@ class User < ActiveRecord::Base
     following.include?(other_user)
   end
 
+  private
+  def timeline_array(timelines)
+    timelines.map do |timeline|
+      {
+        user: {name: timeline.user.name, uid: timeline.user.uid, following: self.following?(timeline.user)},
+        timeline: timeline,
+        image: timeline.attachment_url
+      }
+    end
+  end
 end

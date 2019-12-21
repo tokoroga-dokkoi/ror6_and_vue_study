@@ -4,9 +4,9 @@ Rails.application.routes.draw do
       mount_devise_token_auth_for 'User', at: 'auth', controllers: {
         registrations: 'api/auth/registrations'
       }
-      get  '/users', to: "users#index" 
+      get  '/mypage',   to: "users#index" 
+      get  '/timeline', to: "posts#timeline"
       post '/posts', to: "posts#create"
-      get  '/posts', to: "posts#index"
       resources :relationships, only: [:create, :destroy]
     end
   end

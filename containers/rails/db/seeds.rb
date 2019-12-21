@@ -1,5 +1,5 @@
 ## Create User
-user = User.create!(
+users = User.create!(
     [
         {
             email: "testuser1@exsample.com",
@@ -22,6 +22,10 @@ user = User.create!(
     ]
 )
 
+## CreateRelationShips
+following_user = User.first()
+followed_users = User.where.not(id: following_user.id)
+followed_users.map { |followed_user| following_user.follow(followed_user)}
 ## Get Image Files
 def get_image_files()
     file_path = "#{Rails.root}/spec/factories/image/*"
@@ -44,19 +48,17 @@ end
 
 ## Create Posts
 file_list = get_image_files()
-
-User.all.each do |user|
-    5.times do |n|
-        img_file                = file_list.sample
-        img_file_encoded_base64 = image_to_base64(img_file)
-        post = user.posts.create!({
-            content: Faker::Book.title,
-            latitude: Random.new().rand(100.0),
-            longitude: Random.new().rand(100.0),
-            is_public: [true, false].sample
-        })
-        #画像をアタッチ
-        post.parse_base64(img_file_encoded_base64)
-    end
+15.times do |n|
+    user = User.where('id >= ?', rand(User.first.id..User.last.id)).first
+    img_file                = file_list.sample
+    img_file_encoded_base64 = image_to_base64(img_file)
+    post = user.posts.create!({
+        content: Faker::Book.title,
+        latitude: Random.new().rand(100.0),
+        longitude: Random.new().rand(100.0),
+        is_public: [true, false].sample
+    })
+    #画像をアタッチ
+    post.parse_base64(img_file_encoded_base64)
 end
 
