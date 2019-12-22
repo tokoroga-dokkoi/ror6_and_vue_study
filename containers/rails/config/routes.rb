@@ -5,8 +5,8 @@ Rails.application.routes.draw do
         registrations: 'api/auth/registrations'
       }
       get  '/mypage',   to: "users#index" 
-      get  '/timeline', to: "posts#timeline"
       post '/posts', to: "posts#create"
+      resources :comments, only: [:create, :update, :destroy]
       resources :relationships, only: [:create, :destroy]
     end
   end
